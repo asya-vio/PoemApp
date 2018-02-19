@@ -5,23 +5,28 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_all"
+            android:icon="@drawable/ic_menu_all_poems"
+            android:title="Читать все" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_national"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="Читать отечественные" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_foreign"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:title="Читать зарубежные" />
+        <item
+            android:id="@+id/nav_load_new"
+            android:icon="@drawable/ic_menu_load_new"
+            android:title="Загрузить новые" />
         <item
             android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:icon="@drawable/ic_menu_managepng"
+            android:title="Настройки" />
     </group>
 
+    <!--
     <item android:title="Communicate">
         <menu>
             <item
@@ -33,6 +38,6 @@
                 android:icon="@drawable/ic_menu_send"
                 android:title="Send" />
         </menu>
-    </item>
+    </item>-->
 
 </menu>

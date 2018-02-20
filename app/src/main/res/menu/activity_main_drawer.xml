@@ -6,23 +6,23 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_all"
-            android:icon="@drawable/ic_menu_all_poems"
+            android:icon="@drawable/ic_menu_all_poems2"
             android:title="Читать все" />
         <item
             android:id="@+id/nav_national"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_menu_read"
             android:title="Читать отечественные" />
         <item
             android:id="@+id/nav_foreign"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_read"
             android:title="Читать зарубежные" />
         <item
             android:id="@+id/nav_load_new"
-            android:icon="@drawable/ic_menu_load_new"
+            android:icon="@drawable/ic_menu_load_new2"
             android:title="Загрузить новые" />
         <item
             android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_managepng"
+            android:icon="@drawable/ic_menu_manage2"
             android:title="Настройки" />
     </group>
 

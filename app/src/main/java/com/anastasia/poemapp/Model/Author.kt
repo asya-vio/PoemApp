@@ -1,5 +1,6 @@
 package com.anastasia.poemapp.Model
 
+import android.graphics.Bitmap
 import android.media.Image
 
 /**
@@ -10,7 +11,7 @@ class Author (
         var lastName : String,
         var firstName : String?,
         var secondName : String?,
-        var photo : Image?){
+        var photo : Bitmap?){
 
     //Как правильно объявлять поля класса?
     //Должны ли они быть приватными?

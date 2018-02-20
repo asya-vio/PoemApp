@@ -1,5 +1,6 @@
 package com.anastasia.poemapp.Model
 
+import android.graphics.Bitmap
 import android.media.Image
 
 /**
@@ -13,9 +14,27 @@ data class Poem(
         var year : String?,
         val text : String,
         var status : Status,
-        var photo : Image?
+        var photo : Bitmap?
 ) {
     companion object PoemList : ArrayList<Poem>()
+
+    fun getAuthorName() : String{
+        var result = ""
+        if (author != null){
+            result += author?.lastName
+            result += author?.firstName!![0] + "." + author?.secondName!![0] + "."
+        }
+        return result
+    }
+
+    fun getBeginText() : String{
+        var result = ""
+        if (text != null){
+            result += text.subSequence(0, 20)
+        }
+
+        return result
+    }
 
     fun getNationalPoems() : ArrayList<Poem>{
 

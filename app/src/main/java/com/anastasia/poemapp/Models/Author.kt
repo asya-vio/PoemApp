@@ -1,7 +1,6 @@
-package com.anastasia.poemapp.Model
+package com.anastasia.poemapp.Models
 
 import android.graphics.Bitmap
-import android.media.Image
 
 /**
  * Created by Anastasia on 19.02.2018.

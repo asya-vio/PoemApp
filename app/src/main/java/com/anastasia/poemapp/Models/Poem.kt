@@ -1,7 +1,6 @@
-package com.anastasia.poemapp.Model
+package com.anastasia.poemapp.Models
 
 import android.graphics.Bitmap
-import android.media.Image
 
 /**
  * Created by Anastasia on 19.02.2018.
@@ -21,7 +20,7 @@ data class Poem(
     fun getAuthorName() : String{
         var result = ""
         if (author != null){
-            result += author?.lastName
+            result += author?.lastName + " "
             result += author?.firstName!![0] + "." + author?.secondName!![0] + "."
         }
         return result
@@ -31,6 +30,7 @@ data class Poem(
         var result = ""
         if (text != null){
             result += text.subSequence(0, 20)
+            result += "..."
         }
 
         return result

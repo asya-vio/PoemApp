@@ -1,13 +1,19 @@
 package com.anastasia.poemapp
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
+import com.anastasia.poemapp.Adapters.CustomRecyclerViewAdapter
+import com.anastasia.poemapp.Models.Author
+import com.anastasia.poemapp.Models.Poem
+import com.anastasia.poemapp.Models.Status
+import com.anastasia.poemapp.Models.Type
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -25,7 +31,41 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        title = "Стихотворы"
+        title = "Стихотворцы"
+
+        val recyclerViewAllPoem = findViewById<RecyclerView>(R.id.main_recycler_view)
+        //recyclerViewAllPoem.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewAllPoem.layoutManager = LinearLayoutManager(this)
+
+        var author = Author(2, "Есенин", "Сергей", "Александрович", null)
+
+        val text : String = "Серебристая дорога,\n" +
+                "Ты зовешь меня куда?\n" +
+                "Свечкой чисточетверговой\n" +
+                "Над тобой горит звезда.\n" +
+                "\n" +
+                "Грусть ты или радость теплишь?\n" +
+                "Иль к безумью правишь бег?\n" +
+                "Помоги мне сердцем вешним\n" +
+                "Долюбить твой жесткий снег.\n" +
+                "\n" +
+                "Дай ты мне зарю на дровни,\n" +
+                "Ветку вербы на узду.\n" +
+                "Может быть, к вратам господним\n" +
+                "Сам себя я приведу."
+
+        var poem = Poem(2, "Серебристая дорога", author, Type.NATIONAL, "1917", text, Status.OLD, null )
+
+
+        var listPoem = ArrayList<Poem>()
+        listPoem.add(poem)
+        listPoem.add(poem)
+        listPoem.add(poem)
+
+        val adapter = CustomRecyclerViewAdapter(listPoem)
+        recyclerViewAllPoem.adapter = adapter
+
+
     }
 
     override fun onBackPressed() {

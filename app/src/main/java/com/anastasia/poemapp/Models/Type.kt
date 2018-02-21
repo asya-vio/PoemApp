@@ -1,4 +1,4 @@
-package com.anastasia.poemapp.Model
+package com.anastasia.poemapp.Models
 
 /**
  * Created by Anastasia on 19.02.2018.

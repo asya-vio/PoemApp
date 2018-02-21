@@ -7,8 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.anastasia.poemapp.Model.Poem
+import com.anastasia.poemapp.Models.Poem
 import com.anastasia.poemapp.R
+import com.anastasia.poemapp.Interfaces.RecyclerViewClickListener
+import android.R.attr.onClick
+import android.widget.Toast
+
 
 /**
  * Created by Anastasia on 20.02.2018.
@@ -16,6 +20,7 @@ import com.anastasia.poemapp.R
 class CustomRecyclerViewAdapter (private val listData : ArrayList<Poem>) :
             RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder>(){
 
+    private val mListener: RecyclerViewClickListener? = null
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomRecyclerViewAdapter.ViewHolder {
 
@@ -30,12 +35,24 @@ class CustomRecyclerViewAdapter (private val listData : ArrayList<Poem>) :
 
         override fun onBindViewHolder(holder: CustomRecyclerViewAdapter.ViewHolder, position: Int) {
             holder.bindData(listData[position])
+            //
         }
 
         override fun getItemCount() = listData.size
 
-        class ViewHolder(itemView: View)
-            : RecyclerView.ViewHolder(itemView) {
+        class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+
+            var recyclerViewClickListener: RecyclerViewClickListener? = null
+
+            fun setOnRecyclerViewClickListener(itemClickListener: RecyclerViewClickListener) {
+
+                this.recyclerViewClickListener = itemClickListener
+
+            }
+
+            override fun onClick(p0: View?) {
+                this.recyclerViewClickListener!!.onRecyclerViewItemClick(p0!!, adapterPosition)
+            }
 
             fun bindData(poem: Poem) {
 
@@ -46,10 +63,13 @@ class CustomRecyclerViewAdapter (private val listData : ArrayList<Poem>) :
                 authorNAmeTextView.text = poem.getAuthorName()
 
                 val poemImage = itemView.findViewById<ImageView>(R.id.photo)
-                poemImage.setImageBitmap(poem?.photo)
+                poemImage.setImageResource(R.drawable.ic_author)
+                //poemImage.setImageBitmap(poem?.photo)
 
                 val beginTextView = itemView.findViewById<TextView>(R.id.begin_text)
                 beginTextView.text = poem.getBeginText()
+
+                itemView.setOnClickListener(this)
 
             }
         }

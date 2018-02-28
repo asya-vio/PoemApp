@@ -5,7 +5,7 @@ import android.graphics.Bitmap
 /**
  * Created by Anastasia on 19.02.2018.
  */
-data class Poem(
+class Poem(
         val id : Int,
         var name : String?,
         var author: Author?,
@@ -13,9 +13,52 @@ data class Poem(
         var year : String?,
         val text : String,
         var status : Status,
-        var photo : Bitmap?
+        var photo : String?
 ) {
-    companion object PoemList : ArrayList<Poem>()
+    companion object PoemList : ArrayList<Poem>(){
+        fun getNationalPoems() : ArrayList<Poem>{
+
+            var result = ArrayList<Poem>()
+
+            PoemList.forEach{
+                if (it?.type == Type.NATIONAL){
+                    result.add(it)
+                }
+            }
+            return result
+        }
+
+        fun getForeignPoems() : ArrayList<Poem>{
+            var result = ArrayList<Poem>()
+
+            PoemList.forEach {
+                if (it?.type == Type.FOREIGN){
+                    result.add(it)
+                }
+            }
+            return result
+        }
+
+        fun getPoemsByAuthor(inAuthor: Author) : ArrayList<Poem>{
+            var result = ArrayList<Poem>()
+
+            PoemList.forEach {
+                if (it?.author == inAuthor){
+                    result.add(it)
+                }
+            }
+            return result
+        }
+
+        fun getPoemById(id: Int) : Poem?{
+            PoemList.forEach{
+                if (it.id == id){
+                    return it
+                }
+            }
+            return null
+        }
+    }
 
     fun getAuthorName() : String{
         var result = ""
@@ -36,38 +79,6 @@ data class Poem(
         return result
     }
 
-    fun getNationalPoems() : ArrayList<Poem>{
 
-        var result = ArrayList<Poem>()
-
-        PoemList.forEach{
-            if (it?.type == Type.NATIONAL){
-                result.add(it)
-            }
-        }
-        return result
-    }
-
-    fun getForeignPoems() : ArrayList<Poem>{
-        var result = ArrayList<Poem>()
-
-        PoemList.forEach {
-            if (it?.type == Type.FOREIGN){
-                result.add(it)
-            }
-        }
-        return result
-    }
-
-    fun getPoemsByAuthor(inAuthor: Author) : ArrayList<Poem>{
-        var result = ArrayList<Poem>()
-
-        PoemList.forEach {
-            if (it?.author == inAuthor){
-                result.add(it)
-            }
-        }
-        return result
-    }
 
 }

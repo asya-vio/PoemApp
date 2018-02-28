@@ -5,6 +5,7 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
@@ -31,12 +32,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        title = "Стихотворцы"
+        title = getString(R.string.all_poems)
 
-        val recyclerViewAllPoem = findViewById<RecyclerView>(R.id.main_recycler_view)
-        //recyclerViewAllPoem.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        recyclerViewAllPoem.layoutManager = LinearLayoutManager(this)
 
+
+        loadAllPoems()
+    }
+
+    fun loadAllPoems (){
         var author = Author(2, "Есенин", "Сергей", "Александрович", null)
 
         val text : String = "Серебристая дорога,\n" +
@@ -54,18 +57,36 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 "Может быть, к вратам господним\n" +
                 "Сам себя я приведу."
 
-        var poem = Poem(2, "Серебристая дорога", author, Type.NATIONAL, "1917", text, Status.OLD, null )
+        var poem1 = Poem(1, "Серебристая дорога", author, Type.NATIONAL, "1917", text, Status.OLD, null )
+        var poem2 = Poem(2, "Каменная дорога", author, Type.NATIONAL, "1917", text, Status.OLD, null )
+        var poem3 = Poem(3, "Не серебристая дорога", author, Type.NATIONAL, "1917", text, Status.OLD, null )
+        var poem4 = Poem(4, "Какая-то дорога", author, Type.FOREIGN, "1917", text, Status.OLD, null )
+        var poem5 = Poem(5, "Ужасная дорога", author, Type.FOREIGN, "1917", text, Status.OLD, null )
 
+        Poem.PoemList.add(poem1)
+        Poem.PoemList.add(poem2)
+        Poem.PoemList.add(poem3)
+        Poem.PoemList.add(poem4)
+        Poem.PoemList.add(poem5)
 
-        var listPoem = ArrayList<Poem>()
-        listPoem.add(poem)
-        listPoem.add(poem)
-        listPoem.add(poem)
+        val recyclerViewPoems = findViewById<RecyclerView>(R.id.main_recycler_view)
+        recyclerViewPoems.layoutManager = GridLayoutManager(this, 2)
+        val adapter = CustomRecyclerViewAdapter(Poem.PoemList, applicationContext)
+        recyclerViewPoems.adapter = adapter
+    }
 
-        val adapter = CustomRecyclerViewAdapter(listPoem)
-        recyclerViewAllPoem.adapter = adapter
+    fun loadNationalPoems(){
+        val recyclerViewPoems = findViewById<RecyclerView>(R.id.main_recycler_view)
+        recyclerViewPoems.layoutManager = GridLayoutManager(this, 2)
+        val adapter = CustomRecyclerViewAdapter(Poem.PoemList.getNationalPoems(), applicationContext)
+        recyclerViewPoems.adapter = adapter
+    }
 
-
+    fun loadForeignPoems(){
+        val recyclerViewPoems = findViewById<RecyclerView>(R.id.main_recycler_view)
+        recyclerViewPoems.layoutManager = GridLayoutManager(this, 2)
+        val adapter = CustomRecyclerViewAdapter(Poem.PoemList.getForeignPoems(), applicationContext)
+        recyclerViewPoems.adapter = adapter
     }
 
     override fun onBackPressed() {
@@ -96,13 +117,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_all -> {
-
+                Poem.PoemList.clear()
+                loadAllPoems()
             }
             R.id.nav_national -> {
-
+                loadNationalPoems()
+                title = getString(R.string.national_poems)
             }
             R.id.nav_foreign -> {
-
+                loadForeignPoems()
+                title = getString(R.string.foreign_poems)
             }
             R.id.nav_load_new -> {
 
@@ -111,13 +135,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_manage -> {
 
             }
-            /*
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
-
-            }*/
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)

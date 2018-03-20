@@ -1,13 +1,16 @@
 package com.anastasia.poemapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.transition.Slide
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import com.anastasia.poemapp.Adapters.CustomRecyclerViewAdapter
@@ -18,7 +21,7 @@ import com.anastasia.poemapp.Models.Type
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+open class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,15 +34,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+        loadData()
 
-        title = getString(R.string.all_poems)
-
-
-
-        loadAllPoems()
+        showPoems(getString(R.string.all_poems))
     }
 
-    fun loadAllPoems (){
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (intent != null){
+            val bundle = intent.extras
+            val selectedItem = bundle.getString("selectedItem")
+            when(selectedItem){
+                getString(R.string.all_poems) ->{
+                    showPoems(getString(R.string.all_poems))
+                    //onNavigationItemSelected(nav_view.menu.getItem(R.id.nav_all))
+                }
+                getString(R.string.national_poems) ->{
+                    showPoems(getString(R.string.national_poems))
+                    //onNavigationItemSelected(nav_view.menu.getItem(R.id.nav_national))
+                }
+                getString(R.string.foreign_poems) ->{
+                    showPoems(getString(R.string.foreign_poems))
+                    //onNavigationItemSelected(nav_view.menu.getItem(R.id.nav_foreign))
+                }
+            }
+        }
+        else showPoems(getString(R.string.all_poems))
+    }
+    fun loadData (){
         var author = Author(2, "Есенин", "Сергей", "Александрович", null)
 
         val text : String = "Серебристая дорога,\n" +
@@ -68,25 +90,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Poem.PoemList.add(poem3)
         Poem.PoemList.add(poem4)
         Poem.PoemList.add(poem5)
-
-        val recyclerViewPoems = findViewById<RecyclerView>(R.id.main_recycler_view)
-        recyclerViewPoems.layoutManager = GridLayoutManager(this, 2)
-        val adapter = CustomRecyclerViewAdapter(Poem.PoemList, applicationContext)
-        recyclerViewPoems.adapter = adapter
     }
 
-    fun loadNationalPoems(){
+    fun showPoems(param: String){
         val recyclerViewPoems = findViewById<RecyclerView>(R.id.main_recycler_view)
         recyclerViewPoems.layoutManager = GridLayoutManager(this, 2)
-        val adapter = CustomRecyclerViewAdapter(Poem.PoemList.getNationalPoems(), applicationContext)
-        recyclerViewPoems.adapter = adapter
-    }
-
-    fun loadForeignPoems(){
-        val recyclerViewPoems = findViewById<RecyclerView>(R.id.main_recycler_view)
-        recyclerViewPoems.layoutManager = GridLayoutManager(this, 2)
-        val adapter = CustomRecyclerViewAdapter(Poem.PoemList.getForeignPoems(), applicationContext)
-        recyclerViewPoems.adapter = adapter
+        when(param){
+            getString(R.string.all_poems) ->{
+                val adapter = CustomRecyclerViewAdapter(Poem.PoemList, applicationContext)
+                recyclerViewPoems.adapter = adapter
+                title = getString(R.string.all_poems)
+            }
+            getString(R.string.national_poems) ->{
+                val adapter = CustomRecyclerViewAdapter(Poem.PoemList.getNationalPoems(), applicationContext)
+                recyclerViewPoems.adapter = adapter
+                title = getString(R.string.national_poems)
+            }
+            getString(R.string.foreign_poems) ->{
+                val adapter = CustomRecyclerViewAdapter(Poem.PoemList.getForeignPoems(), applicationContext)
+                recyclerViewPoems.adapter = adapter
+                title = getString(R.string.foreign_poems)
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -98,15 +123,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
             R.id.action_settings -> return true
             else -> return super.onOptionsItemSelected(item)
@@ -114,18 +135,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_all -> {
-                Poem.PoemList.clear()
-                loadAllPoems()
+                showPoems(getString(R.string.all_poems))
+                title = getString(R.string.all_poems)
             }
             R.id.nav_national -> {
-                loadNationalPoems()
+                showPoems(getString(R.string.national_poems))
                 title = getString(R.string.national_poems)
             }
             R.id.nav_foreign -> {
-                loadForeignPoems()
+                showPoems(getString(R.string.foreign_poems))
                 title = getString(R.string.foreign_poems)
             }
             R.id.nav_load_new -> {
@@ -136,7 +156,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
         }
-
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }

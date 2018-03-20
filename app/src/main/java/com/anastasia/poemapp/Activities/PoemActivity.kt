@@ -24,9 +24,6 @@ class PoemActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_poem)
         setSupportActionBar(toolbar)
 
-
-        val INTENT_POEM_ID = "poem_id"
-
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
@@ -34,15 +31,8 @@ class PoemActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        //val bundle = intent.extras
-        val poemId : Int
 
-        /*if(bundle!=null) {
-            poemId = bundle.getInt("poem_id")
-        }
-        else {
-            poemId = -1
-        }*/
+        val poemId : Int
         poemId = intent.getIntExtra("poem_id", -1)
 
         val currentPoem = Poem.PoemList.getPoemById(poemId)
@@ -62,10 +52,8 @@ class PoemActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         else {
             Toast.makeText(this,"Произведение не найдено", Toast.LENGTH_LONG).show()
         }
-
-
-
     }
+
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -93,16 +81,25 @@ class PoemActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     //TODO узнать, можно ли избавиться от этого метода здесь. Как подгружать разные состояния main activity
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_all -> {
-                val intent = Intent(this, MainActivity::class.java)
+                val extras = Bundle()
+                extras.putString("selectedItem", getString(R.string.all_poems))
+                val intent = Intent(this,
+                        MainActivity::class.java).putExtras(extras)
                 startActivity(intent)
             }
             R.id.nav_national -> {
-
+                val extras = Bundle()
+                extras.putString("selectedItem", getString(R.string.national_poems))
+                val intent = Intent(this,
+                        MainActivity::class.java).putExtras(extras)
+                startActivity(intent)
             }
             R.id.nav_foreign -> {
+                val intent = Intent(this,
+                        MainActivity::class.java).putExtra("selectedItem", getString(R.string.foreign_poems))
+                startActivity(intent)
 
             }
             R.id.nav_load_new -> {

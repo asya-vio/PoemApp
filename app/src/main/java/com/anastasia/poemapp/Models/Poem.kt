@@ -1,11 +1,6 @@
 package com.anastasia.poemapp.Models
 
-import android.graphics.Bitmap
-
-/**
- * Created by Anastasia on 19.02.2018.
- */
-class Poem(
+data class Poem(
         val id : Int,
         var name : String?,
         var author: Author?,
@@ -15,8 +10,31 @@ class Poem(
         var status : Status,
         var photo : String?
 ) {
-    companion object PoemList : ArrayList<Poem>(){
-        fun getNationalPoems() : ArrayList<Poem>{
+     object PoemList : ArrayList<Poem>(){
+
+         fun getPoemById(id: Int) : Poem?{
+             PoemList.forEach{
+                 if (it.id == id){
+                     return it
+                 }
+             }
+             return null
+         }
+
+         fun getPoemsByAuthor(inAuthor: Author) : ArrayList<Poem>{
+             var result = ArrayList<Poem>()
+
+             PoemList.forEach {
+                 if (it?.author == inAuthor){
+                     result.add(it)
+                 }
+             }
+             return result
+         }
+
+     }
+
+        /*fun getNationalPoems() : ArrayList<Poem>{
 
             var result = ArrayList<Poem>()
 
@@ -37,28 +55,7 @@ class Poem(
                 }
             }
             return result
-        }
-
-        fun getPoemsByAuthor(inAuthor: Author) : ArrayList<Poem>{
-            var result = ArrayList<Poem>()
-
-            PoemList.forEach {
-                if (it?.author == inAuthor){
-                    result.add(it)
-                }
-            }
-            return result
-        }
-
-        fun getPoemById(id: Int) : Poem?{
-            PoemList.forEach{
-                if (it.id == id){
-                    return it
-                }
-            }
-            return null
-        }
-    }
+        }*/
 
     fun getAuthorName() : String{
         var result = ""
@@ -72,13 +69,11 @@ class Poem(
     fun getBeginText() : String{
         var result = ""
         if (text != null){
-            result += text.subSequence(0, 20)
+            result += text.subSequence(0, 70)
             result += "..."
         }
 
         return result
     }
-
-
 
 }

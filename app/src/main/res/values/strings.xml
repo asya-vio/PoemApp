@@ -10,4 +10,9 @@
     <string name="all_poems">Все произведения</string>
     <string name="national_poems">Отечественные</string>
     <string name="foreign_poems">Зарубежные</string>
+
+    <string name="all_authors">Все авторы</string>
+    <string name="national_authors">Отечественные</string>
+    <string name="foreign_authors">Зарубежные</string>
+    <string name="title_activity_author">AuthorActivity</string>
 </resources>

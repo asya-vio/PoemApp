@@ -26,6 +26,10 @@
             android:name=".Activities.PoemActivity"
             android:label="@string/title_activity_poem"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.AuthorActivity"
+            android:label="@string/title_activity_author"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

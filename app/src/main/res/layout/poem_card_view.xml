@@ -10,6 +10,7 @@
         android:layout_width="150dp"
         android:layout_height="200dp"
         android:id="@+id/card_view"
+        android:background="@drawable/background_poem"
         android:layout_gravity="center">
 
         <RelativeLayout
@@ -22,27 +23,29 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:layout_centerHorizontal="true"
+                android:paddingTop="10dp"
+                android:textSize="16sp"
                 style="@style/HeaderFont">
             </TextView>
 
-            <ImageView
-                android:id="@+id/photo"
-                android:layout_width="80dp"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/poem_name"
-                android:layout_height="80dp" />
             <TextView
-                android:id="@+id/author_name"
-                android:layout_below="@id/photo"
-                android:gravity="center_horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </TextView>
+                android:layout_height="wrap_content"
+                android:id="@+id/poem_year"
+                android:paddingTop="15dp"
+                android:textSize="14sp"
+                android:gravity="center_horizontal"
+                android:layout_below="@id/poem_name"/>
 
             <TextView
                 android:id="@+id/begin_text"
-                android:layout_below="@id/author_name"
+                android:layout_below="@id/poem_year"
                 android:gravity="center_horizontal"
+                android:paddingTop="10dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:paddingBottom="5dp"
+                android:textSize="14sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             </TextView>

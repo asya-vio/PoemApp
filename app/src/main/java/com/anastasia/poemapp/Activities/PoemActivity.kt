@@ -2,7 +2,6 @@ package com.anastasia.poemapp.Activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
@@ -13,8 +12,10 @@ import android.widget.Toast
 import com.anastasia.poemapp.MainActivity
 import com.anastasia.poemapp.Models.Poem
 import com.anastasia.poemapp.R
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_poem.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.app_bar_poem.*
 import kotlinx.android.synthetic.main.content_poem.*
 
 class PoemActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -22,18 +23,18 @@ class PoemActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_poem)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbar_poem)
 
         val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
+                this, drawer_layout_poem, toolbar_poem, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        drawer_layout_poem.addDrawerListener(toggle)
         toggle.syncState()
 
-        nav_view.setNavigationItemSelectedListener(this)
-
+        nav_view_poem.setNavigationItemSelectedListener(this)
 
         val poemId : Int
         poemId = intent.getIntExtra("poem_id", -1)
+
 
         val currentPoem = Poem.PoemList.getPoemById(poemId)
 
@@ -56,8 +57,8 @@ class PoemActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
+        if (drawer_layout_poem.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout_poem.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
         }
@@ -102,16 +103,9 @@ class PoemActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
 
             }
-            R.id.nav_load_new -> {
-
-            }
-
-            R.id.nav_manage -> {
-
-            }
         }
 
-        drawer_layout.closeDrawer(GravityCompat.START)
+        drawer_layout_poem.closeDrawer(GravityCompat.START)
         return true
     }
 }

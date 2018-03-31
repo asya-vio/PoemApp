@@ -35,8 +35,9 @@ open class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         toggle.syncState()
 
         nav_view_main.setNavigationItemSelectedListener(this)
-        loadData()
-
+        if(Poem.PoemList.isEmpty()){
+            loadData()
+        }
         showAuthors(getString(R.string.all_authors))
     }
 

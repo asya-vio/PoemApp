@@ -1,6 +1,11 @@
 package com.anastasia.poemapp.Models
 
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
+
+@Entity
 data class Poem(
+        @PrimaryKey
         val id : Int,
         var name : String?,
         var author: Author?,

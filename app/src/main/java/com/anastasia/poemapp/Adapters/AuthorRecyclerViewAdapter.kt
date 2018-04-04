@@ -1,5 +1,6 @@
 package com.anastasia.poemapp.Adapters
 
+import android.accounts.NetworkErrorException
 import android.content.Context
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
@@ -13,6 +14,7 @@ import com.anastasia.poemapp.Activities.PoemActivity
 import com.anastasia.poemapp.Interfaces.RecyclerViewClickListener
 import com.anastasia.poemapp.Models.Author
 import com.anastasia.poemapp.R
+import com.squareup.picasso.Picasso
 
 /**
  * Created by Anastasia on 20.02.2018.
@@ -64,7 +66,13 @@ class AuthorRecyclerViewAdapter(private val authorList : ArrayList<Author>, cont
                 //TODO должны подгружаться изображения с сервера через их адрес
 
                 val authorIV = itemView.findViewById<ImageView>(R.id.auth_photo)
-                authorIV.setImageResource(R.drawable.berns_ico)
+                //authorIV.setImageResource(R.drawable.berns_ico)
+                try {
+                    Picasso.get().load(author.photo).into(authorIV)
+                }
+                catch (e: NetworkErrorException) {
+                    authorIV.setImageResource(R.drawable.author)
+                }
 
                 itemView.setOnClickListener(this)
 

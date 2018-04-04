@@ -1,11 +1,6 @@
 package com.anastasia.poemapp.Models
 
-import android.graphics.Bitmap
-
-/**
- * Created by Anastasia on 19.02.2018.
- */
-class Author (
+data class Author (
         val id : Int,
         var lastName : String,
         var firstName : String?,
@@ -13,6 +8,7 @@ class Author (
         var type : Type,
         var photo : String?
 ){
+
     object AuthorList : ArrayList<Author>(){
 
         fun getAuthorById(id: Int) : Author?{
@@ -23,8 +19,6 @@ class Author (
             }
             return null
         }
-
-        fun loadAuthorsFromDb(){}
 
         fun getForeign() : ArrayList<Author>{
             var result = ArrayList<Author>()

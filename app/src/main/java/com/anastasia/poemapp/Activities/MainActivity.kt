@@ -12,15 +12,17 @@ import android.view.Menu
 import android.view.MenuItem
 import com.anastasia.poemapp.Adapters.AuthorRecyclerViewAdapter
 import com.anastasia.poemapp.Adapters.PoemRecyclerViewAdapter
+import com.anastasia.poemapp.AppBase.App
 import com.anastasia.poemapp.Models.Author
 import com.anastasia.poemapp.Models.Poem
 import com.anastasia.poemapp.Models.Status
 import com.anastasia.poemapp.Models.Type
 import com.google.gson.Gson
+import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import okhttp3.*
+import java.io.IOException
 
 open class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -35,7 +37,7 @@ open class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         toggle.syncState()
 
         nav_view_main.setNavigationItemSelectedListener(this)
-        if(Poem.PoemList.isEmpty()){
+        if (Author.AuthorList.isEmpty()) {
             loadData()
         }
         showAuthors(getString(R.string.all_authors))
@@ -43,127 +45,140 @@ open class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        if (intent != null){
+        if (intent != null) {
             val bundle = intent.extras
             val selectedItem = bundle.getString("selectedItem")
-            when(selectedItem){
-                getString(R.string.all_authors) ->{
+            when (selectedItem) {
+                getString(R.string.all_authors) -> {
                     showAuthors(getString(R.string.all_authors))
                     //onNavigationItemSelected(nav_view.menu.getItem(R.id.nav_all))
                 }
-                getString(R.string.national_authors) ->{
+                getString(R.string.national_authors) -> {
                     showAuthors(getString(R.string.national_authors))
                     //onNavigationItemSelected(nav_view.menu.getItem(R.id.nav_national))
                 }
-                getString(R.string.foreign_authors) ->{
+                getString(R.string.foreign_authors) -> {
                     showAuthors(getString(R.string.foreign_authors))
                     //onNavigationItemSelected(nav_view.menu.getItem(R.id.nav_foreign))
                 }
             }
-        }
-        else showAuthors(getString(R.string.all_authors))
+        } else showAuthors(getString(R.string.all_authors))
     }
-    fun loadData (){
 
-        var author1 = Author(1, "Есенин", "Сергей", "Александрович", Type.NATIONAL, null)
-        var author2 = Author(2, "Бернс", "Роберт", null, Type.FOREIGN, null)
-        var author3 = Author(3, "Хайям", "Омар", null, Type.FOREIGN, null)
-        var author4 = Author(4, "Асадов", "Эдуард", null, Type.NATIONAL, null)
+    private fun loadData() {
 
-        Author.AuthorList.add(author1)
-        Author.AuthorList.add(author2)
-        Author.AuthorList.add(author3)
-        Author.AuthorList.add(author4)
-        /*var text : String = "О Брут, где Кассий, где часовой,\n" +
-                "Глашатай идеи священной,\n" +
-                "Не раз отводивший душу с тобой\n" +
-                "В вечерних прогулках над Сеной?\n" +
-                "\n" +
-                "На землю взирали вы свысока,\n" +
-                "Паря наравне с облаками.\n" +
-                "Была туманней, чем облака,\n" +
-                "Идея, владевшая вами.\n" +
-                "\n" +
-                "О Брут, где Кассий, твой друг, твой брат,\n" +
-                "О мщенье забывший так рано?\n" +
-                "Ведь он на Неккаре стал, говорят,\n" +
-                "Чтецом при особе тирана!»\n" +
-                "\n" +
-                "Но Брут отвечает: «Ты круглый дурак!\n" +
-                "О, близорукость поэта!\n" +
-                "Мой Кассий читает тирану, но так,\n" +
-                "Чтоб сжить тирана со света.\n" +
-                "\n" +
-                "Стихи Мацерата выкопал плут,\n" +
-                "Страшней кинжала их звуки.\n" +
-                "Рано иль поздно тирану капут,\n" +
-                "Бедняга погибнет от скуки"*/
-
-
-        var text = "Серебристая дорога,\n" +
-                "Ты зовешь меня куда?\n" +
-                "Свечкой чисточетверговой\n" +
-                "Над тобой горит звезда.\n" +
-                "\n" +
-                "Грусть ты или радость теплишь?\n" +
-                "Иль к безумью правишь бег?\n" +
-                "Помоги мне сердцем вешним\n" +
-                "Долюбить твой жесткий снег.\n" +
-                "\n" +
-                "Дай ты мне зарю на дровни,\n" +
-                "Ветку вербы на узду.\n" +
-                "Может быть, к вратам господним\n" +
-                "Сам себя я приведу."
-
-        var poem3 = Poem(3, "Серебристая дорога", author1, Type.NATIONAL, "1917", text, Status.OLD, null )
-
-        Poem.PoemList.add(poem3)
-
-
-
-        /*var poem1 = Poem(1, "Серебристая дорога", author, Type.NATIONAL, "1918", text, Status.OLD, null )
-        var poem2 = Poem(2, "Каменная дорога", author, Type.NATIONAL, "1918", text, Status.OLD, null )
-
-        var poem4 = Poem(4, "Какая-то дорога", author, Type.FOREIGN, "1918", text, Status.OLD, null )
-        var poem5 = Poem(5, "Ужасная дорога", author, Type.FOREIGN, "1918", text, Status.OLD, null )
-
-        Poem.PoemList.add(poem1)
-        Poem.PoemList.add(poem2)
-        Poem.PoemList.add(poem3)
-        Poem.PoemList.add(poem4)
-        Poem.PoemList.add(poem5)
-
-        Thread(Runnable {
-
+        if ((application as App).isOnline()) {
             val client = OkHttpClient()
-
-            val request = Request.Builder().url("https://api.github.com/users/square/repos")
+            val request = Request.Builder()
+                    .url("https://api.myjson.com/bins/ammgb")
                     .build()
+            client.newCall(request).enqueue(object : Callback {
 
-            val response = client.newCall(request).execute()
-            val responseText = response.body()!!.string()
+                override fun onResponse(call: Call?, response: Response?) {
+                    val responseText = response?.body()!!.string()
+                    val authors = Gson().fromJson(responseText, Author.AuthorList::class.java)
 
-            val repos = Gson().fromJson(responseText,
-                    Poem.PoemList::class.java)
+                    Paper.book().write("authors", authors)
 
-        }).start()*/
+                    runOnUiThread {
+                        showAuthors(getString(R.string.all_authors))
+                    }
+                }
+
+                override fun onFailure(call: Call?, e: IOException?) {
+                    println("Failed to execute request")
+                }
+            })
+        } else {
+            val authors: Author.AuthorList = Paper.book().read("authors")
+            showAuthors(getString(R.string.all_authors))
+        }
+
+//        var author1 = Author(1, "Есенин", "Сергей", "Александрович", Type.NATIONAL, null)
+//        var author2 = Author(2, "Бернс", "Роберт", null, Type.FOREIGN, null)
+//        var author3 = Author(3, "Хайям", "Омар", null, Type.FOREIGN, null)
+//        var author4 = Author(4, "Асадов", "Эдуард", null, Type.NATIONAL, null)
+//
+//        Author.AuthorList.add(author1)
+//        Author.AuthorList.add(author2)
+//        Author.AuthorList.add(author3)
+//        Author.AuthorList.add(author4)
+//        /*var text : String = "О Брут, где Кассий, где часовой,\n" +
+//                "Глашатай идеи священной,\n" +
+//                "Не раз отводивший душу с тобой\n" +
+//                "В вечерних прогулках над Сеной?\n" +
+//                "\n" +
+//                "На землю взирали вы свысока,\n" +
+//                "Паря наравне с облаками.\n" +
+//                "Была туманней, чем облака,\n" +
+//                "Идея, владевшая вами.\n" +
+//                "\n" +
+//                "О Брут, где Кассий, твой друг, твой брат,\n" +
+//                "О мщенье забывший так рано?\n" +
+//                "Ведь он на Неккаре стал, говорят,\n" +
+//                "Чтецом при особе тирана!»\n" +
+//                "\n" +
+//                "Но Брут отвечает: «Ты круглый дурак!\n" +
+//                "О, близорукость поэта!\n" +
+//                "Мой Кассий читает тирану, но так,\n" +
+//                "Чтоб сжить тирана со света.\n" +
+//                "\n" +
+//                "Стихи Мацерата выкопал плут,\n" +
+//                "Страшней кинжала их звуки.\n" +
+//                "Рано иль поздно тирану капут,\n" +
+//                "Бедняга погибнет от скуки"*/
+//
+//
+//        var text = "Серебристая дорога,\n" +
+//                "Ты зовешь меня куда?\n" +
+//                "Свечкой чисточетверговой\n" +
+//                "Над тобой горит звезда.\n" +
+//                "\n" +
+//                "Грусть ты или радость теплишь?\n" +
+//                "Иль к безумью правишь бег?\n" +
+//                "Помоги мне сердцем вешним\n" +
+//                "Долюбить твой жесткий снег.\n" +
+//                "\n" +
+//                "Дай ты мне зарю на дровни,\n" +
+//                "Ветку вербы на узду.\n" +
+//                "Может быть, к вратам господним\n" +
+//                "Сам себя я приведу."
+//
+//        var poem3 = Poem(3, "Серебристая дорога", author1, Type.NATIONAL, "1917", text, Status.OLD, null )
+//
+//        Poem.PoemList.add(poem3)
+//
+//
+//
+//        /*var poem1 = Poem(1, "Серебристая дорога", author, Type.NATIONAL, "1918", text, Status.OLD, null )
+//        var poem2 = Poem(2, "Каменная дорога", author, Type.NATIONAL, "1918", text, Status.OLD, null )
+//
+//        var poem4 = Poem(4, "Какая-то дорога", author, Type.FOREIGN, "1918", text, Status.OLD, null )
+//        var poem5 = Poem(5, "Ужасная дорога", author, Type.FOREIGN, "1918", text, Status.OLD, null )
+//
+//        Poem.PoemList.add(poem1)
+//        Poem.PoemList.add(poem2)
+//        Poem.PoemList.add(poem3)
+//        Poem.PoemList.add(poem4)
+//        Poem.PoemList.add(poem5)
+
     }
 
-    fun showAuthors(param: String){
+    fun showAuthors(param: String) {
         val recyclerViewAuthors = findViewById<RecyclerView>(R.id.main_recycler_view)
         recyclerViewAuthors.layoutManager = GridLayoutManager(this, 2)
-        when(param){
-            getString(R.string.all_authors) ->{
+        when (param) {
+            getString(R.string.all_authors) -> {
                 val adapter = AuthorRecyclerViewAdapter(Author.AuthorList, applicationContext)
                 recyclerViewAuthors.adapter = adapter
                 title = getString(R.string.all_authors)
             }
-            getString(R.string.national_authors) ->{
+            getString(R.string.national_authors) -> {
                 val adapter = AuthorRecyclerViewAdapter(Author.AuthorList.getNational(), applicationContext)
                 recyclerViewAuthors.adapter = adapter
                 title = getString(R.string.national_authors)
             }
-            getString(R.string.foreign_authors) ->{
+            getString(R.string.foreign_authors) -> {
                 val adapter = AuthorRecyclerViewAdapter(Author.AuthorList.getForeign(), applicationContext)
                 recyclerViewAuthors.adapter = adapter
                 title = getString(R.string.foreign_authors)

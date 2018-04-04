@@ -16,9 +16,6 @@ import com.anastasia.poemapp.Models.Author
 import com.anastasia.poemapp.R
 import com.squareup.picasso.Picasso
 
-/**
- * Created by Anastasia on 20.02.2018.
- */
 class AuthorRecyclerViewAdapter(private val authorList : ArrayList<Author>, context: Context) :
             RecyclerView.Adapter<AuthorRecyclerViewAdapter.ViewHolder>(){
 
@@ -63,10 +60,8 @@ class AuthorRecyclerViewAdapter(private val authorList : ArrayList<Author>, cont
                 val authorNameTV = itemView.findViewById<TextView>(R.id.auth_name)
                 authorNameTV.text = author.firstName + " " + author.lastName
 
-                //TODO должны подгружаться изображения с сервера через их адрес
-
                 val authorIV = itemView.findViewById<ImageView>(R.id.auth_photo)
-                //authorIV.setImageResource(R.drawable.berns_ico)
+
                 try {
                     Picasso.get().load(author.photo).into(authorIV)
                 }

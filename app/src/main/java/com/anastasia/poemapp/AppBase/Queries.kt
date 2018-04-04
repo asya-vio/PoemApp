@@ -1,61 +1,69 @@
 package com.anastasia.poemapp.AppBase
 
 import com.anastasia.poemapp.Models.Author
+import com.anastasia.poemapp.Models.Poem
 import com.anastasia.poemapp.Models.Type
+import com.anastasia.poemapp.R
 import com.google.gson.Gson
 import io.paperdb.Paper
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import okhttp3.*
 import okhttp3.Request.*
+import java.io.IOException
 
-//fun loadAuthorsByType(id: Type): Author.AuthorList {
-//    val httpClient = OkHttpClient()
-//
-//    // Создать запрос
-//    val request = Builder()
-//            .url("http://api.jsonbin.io/b/5ac26b892be5ef0bbf468526")
-//            .build()
-//
-//    val response = httpClient.newCall(request).execute()
-//
-//    // Обработать полученные данные
-//    val responseText = response.body()!!.string()
-//
-//    System.out.println(responseText)
-//
-//    val authors = Gson().fromJson(responseText, Author.AuthorList::class.java)
-//
-//    Paper.book().write("authors", authors)
-//
-//    val requestById: Author.AuthorList = Author.AuthorList
-//
-//    for (item in authors) {
-//        if (item.type == id) {
-//            requestById.add(item)
-//        }
-//    }
-//
-//    Paper.book("for-foods-"+id).write("foods",requestById)
-//
-//    return requestById
-//}
 
-fun loadAuthors(): Author.AuthorList {
-    val httpClient = OkHttpClient()
-
-    // Создать запрос
-    val request = Builder()
-            .url("http://api.jsonbin.io/b/5ac26b892be5ef0bbf468526")
+fun loadAuthors() {
+    val client = OkHttpClient()
+    val request = Request.Builder()
+            .url("https://api.myjson.com/bins/v811f")
             .build()
+    client.newCall(request).enqueue(object : Callback {
 
-    val response = httpClient.newCall(request).execute()
+        override fun onResponse(call: Call?, response: Response?) {
 
-    // Обработать полученные данные
-    val responseText = response.body()!!.string()
+            val responseText = response?.body()!!.string()
+            val authors = Gson().fromJson(responseText, Author.AuthorList::class.java)
 
-    System.out.println(responseText)
+            authors.forEach {
+                if (it.typeId == 1) {
+                    it.type = Type.NATIONAL
+                } else if (it.typeId == 2) {
+                    it.type = Type.FOREIGN
+                }
+            }
+            Paper.book().write("authors", authors)
+        }
 
-    val authors = Gson().fromJson(responseText, Author.AuthorList::class.java)
+        override fun onFailure(call: Call?, e: IOException?) {
+            println("Failed to execute request")
+        }
+    })
+}
 
-    return authors
+
+
+fun loadPoems() {
+    val client = OkHttpClient()
+    val request = Request.Builder()
+            .url("https://api.myjson.com/bins/bp843")
+            .build()
+    client.newCall(request).enqueue(object : Callback {
+
+        override fun onResponse(call: Call?, response: Response?) {
+
+            val responseText = response?.body()!!.string()
+            val poems = Gson().fromJson(responseText, Poem.PoemList::class.java)
+
+            poems.forEach {
+                if(it.authorId != null){
+                    val authors: Author.AuthorList = Paper.book().read("authors")
+                    it.author = authors.getAuthorById(it.authorId)
+                }
+            }
+            Paper.book().write("poems", poems)
+        }
+
+        override fun onFailure(call: Call?, e: IOException?) {
+            println("Failed to execute request")
+        }
+    })
 }

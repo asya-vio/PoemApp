@@ -4,8 +4,9 @@ data class Author (
         val id : Int,
         var lastName : String,
         var firstName : String?,
-        var secondName : String?,
+        //var secondName : String?,
         var type : Type,
+        var typeId: Int,
         var photo : String?
 ){
 

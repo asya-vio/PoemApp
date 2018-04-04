@@ -3,17 +3,14 @@ package com.anastasia.poemapp.Models
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 
-@Entity
 data class Poem(
-        @PrimaryKey
         val id : Int,
         var name : String?,
+        var authorId : Int,
         var author: Author?,
-        var type: Type?,
         var year : String?,
-        val text : String,
-        var status : Status,
-        var photo : String?
+        val text : String
+        //var status : Status
 ) {
      object PoemList : ArrayList<Poem>(){
 
@@ -39,34 +36,11 @@ data class Poem(
 
      }
 
-        /*fun getNationalPoems() : ArrayList<Poem>{
-
-            var result = ArrayList<Poem>()
-
-            PoemList.forEach{
-                if (it?.type == Type.NATIONAL){
-                    result.add(it)
-                }
-            }
-            return result
-        }
-
-        fun getForeignPoems() : ArrayList<Poem>{
-            var result = ArrayList<Poem>()
-
-            PoemList.forEach {
-                if (it?.type == Type.FOREIGN){
-                    result.add(it)
-                }
-            }
-            return result
-        }*/
-
     fun getAuthorName() : String{
         var result = ""
         if (author != null){
             result += author?.lastName + " "
-            result += author?.firstName!![0] + "." + author?.secondName!![0] + "."
+            result += author?.firstName
         }
         return result
     }
@@ -74,11 +48,18 @@ data class Poem(
     fun getBeginText() : String{
         var result = ""
         if (text != null){
-            result += text.subSequence(0, 70)
-            result += "..."
+            if(text.length > 70){
+                result += text.subSequence(0, 70)
+                result += "..."
+            }
+            else{
+                result += text
+            }
+
         }
 
         return result
     }
+
 
 }

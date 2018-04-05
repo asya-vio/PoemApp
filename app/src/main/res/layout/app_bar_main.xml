@@ -18,6 +18,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@drawable/side_nav_bar"
             app:titleTextColor="#FFFF"
+            android:scrollHorizontally="true"
+            app:layout_scrollFlags="enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
         <!--android:background="#F5B884"-->
 

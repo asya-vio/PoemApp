@@ -20,6 +20,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:itemIconTint="#391F47"
+        android:scrollHorizontally="true"
+        app:layout_scrollFlags="enterAlways"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" />

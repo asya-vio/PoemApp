@@ -10,7 +10,6 @@ import com.anastasia.poemapp.Models.Poem
 import com.anastasia.poemapp.R
 import com.anastasia.poemapp.Interfaces.RecyclerViewClickListener
 import android.content.Intent
-import android.provider.Settings.Global.getString
 import com.anastasia.poemapp.Activities.PoemActivity
 
 class PoemRecyclerViewAdapter(private val poemList : ArrayList<Poem>,context: Context) :

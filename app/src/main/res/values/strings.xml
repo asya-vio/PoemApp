@@ -16,4 +16,5 @@
     <string name="national_authors">Отечественные</string>
     <string name="foreign_authors">Зарубежные</string>
     <string name="title_activity_author">AuthorActivity</string>
+    <string name="title_activity_base_navigate">BaseNavigateActivity</string>
 </resources>

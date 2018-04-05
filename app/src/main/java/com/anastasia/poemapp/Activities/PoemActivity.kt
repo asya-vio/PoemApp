@@ -1,6 +1,5 @@
 package com.anastasia.poemapp.Activities
 
-import android.accounts.NetworkErrorException
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -10,11 +9,10 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import com.anastasia.poemapp.AppBase.getPoemById
 import com.anastasia.poemapp.MainActivity
-import com.anastasia.poemapp.Models.Poem
 import com.anastasia.poemapp.R
 import com.squareup.picasso.Picasso
-import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_poem.*
 import kotlinx.android.synthetic.main.app_bar_poem.*
 import kotlinx.android.synthetic.main.content_poem.*
@@ -36,19 +34,15 @@ class PoemActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val poemId: Int
         poemId = intent.getIntExtra("poem_id", -1)
 
-
-        val poems: Poem.PoemList = Paper.book().read("poems")
-        val currentPoem = poems.getPoemById(poemId)
-        //val currentPoem = Poem.PoemList.getPoemById(poemId)
+        val currentPoem = getPoemById(poemId)
 
         if (currentPoem != null) {
 
             try {
                 Picasso.get().load(currentPoem.author!!.photo).into(poem_photo)
-            } catch (e: NetworkErrorException) {
+            } catch (e: Exception) {
                 poem_photo.setImageResource(R.drawable.author)
             }
-            //poem_name.text = currentPoem.name
             author_name.text = currentPoem.getAuthorName()
             year.text = currentPoem.year
             poem_text.text = currentPoem.text
@@ -76,16 +70,13 @@ class PoemActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
             R.id.action_settings -> return true
             else -> return super.onOptionsItemSelected(item)
         }
     }
 
-    //TODO узнать, можно ли избавиться от этого метода здесь. Как подгружать разные состояния main activity
+    //TODO узнать, можно ли избавиться от этого метода здесь. Как подгружать разные состояния main activity. Наследоввание не получилось
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_all -> {

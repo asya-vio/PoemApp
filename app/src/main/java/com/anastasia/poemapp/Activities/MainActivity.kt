@@ -11,13 +11,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import com.anastasia.poemapp.Adapters.AuthorRecyclerViewAdapter
-import com.anastasia.poemapp.AppBase.App
-import com.anastasia.poemapp.Models.Author
-import io.paperdb.Paper
+import com.anastasia.poemapp.AppBase.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import com.anastasia.poemapp.AppBase.loadAuthors
-import com.anastasia.poemapp.AppBase.loadPoems
 
 
 open class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -33,11 +29,10 @@ open class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         toggle.syncState()
 
         nav_view_main.setNavigationItemSelectedListener(this)
-//        if (Author.AuthorList.isEmpty()) {
-//            loadData()
-//        }
-        loadData()
 
+        if (isDBEmpty()) {
+            loadData()
+        }
         showAuthors(getString(R.string.all_authors))
     }
 
@@ -62,15 +57,9 @@ open class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     private fun loadData() {
 
-        //потом убрать
-        Author.AuthorList.clear()
-
         if ((application as App).isOnline()) {
-            loadAuthors()
-            loadPoems()
-            runOnUiThread {
-                showAuthors(getString(R.string.all_authors))
-            }
+            loadAuthorsFromServer()
+            loadPoemsFromServer()
 
         } else {
             showAuthors(getString(R.string.all_authors))
@@ -83,20 +72,17 @@ open class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         recyclerViewAuthors.layoutManager = GridLayoutManager(this, 2)
         when (param) {
             getString(R.string.all_authors) -> {
-                val authors: Author.AuthorList = Paper.book().read("authors")
-                val adapter = AuthorRecyclerViewAdapter(authors, applicationContext)
+                val adapter = AuthorRecyclerViewAdapter(getAuthorsFromDB(), applicationContext)
                 recyclerViewAuthors.adapter = adapter
                 title = getString(R.string.all_authors)
             }
             getString(R.string.national_authors) -> {
-                val authors: Author.AuthorList = Paper.book().read("authors")
-                val adapter = AuthorRecyclerViewAdapter(authors.getNational(), applicationContext)
+                val adapter = AuthorRecyclerViewAdapter(getNationalAuthorsFromDB(), applicationContext)
                 recyclerViewAuthors.adapter = adapter
                 title = getString(R.string.national_authors)
             }
             getString(R.string.foreign_authors) -> {
-                val authors: Author.AuthorList = Paper.book().read("authors")
-                val adapter = AuthorRecyclerViewAdapter(authors.getForeign(), applicationContext)
+                val adapter = AuthorRecyclerViewAdapter(getForeignAuthorsFromDB(), applicationContext)
                 recyclerViewAuthors.adapter = adapter
                 title = getString(R.string.foreign_authors)
             }

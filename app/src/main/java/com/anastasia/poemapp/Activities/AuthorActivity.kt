@@ -2,7 +2,6 @@ package com.anastasia.poemapp.Activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
@@ -11,13 +10,11 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import com.anastasia.poemapp.Adapters.PoemRecyclerViewAdapter
+import com.anastasia.poemapp.AppBase.*
 import com.anastasia.poemapp.MainActivity
 import com.anastasia.poemapp.Models.Author
-import com.anastasia.poemapp.Models.Poem
 import com.anastasia.poemapp.R
 import kotlinx.android.synthetic.main.activity_author.*
 import kotlinx.android.synthetic.main.app_bar_author.*
@@ -39,7 +36,7 @@ class AuthorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         val authorId : Int
         authorId = intent.getIntExtra("author_id", -1)
 
-        val currentAuthor = Author.AuthorList.getAuthorById(authorId)
+        val currentAuthor = getAuthorById(authorId)
 
         if (currentAuthor != null){
 
@@ -74,7 +71,7 @@ class AuthorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     fun showPoems(author: Author){
         val recyclerViewPoems = findViewById<RecyclerView>(R.id.author_recycler_view)
         recyclerViewPoems.layoutManager = GridLayoutManager(this, 2)
-        val adapter = PoemRecyclerViewAdapter(Poem.PoemList.getPoemsByAuthor(author), applicationContext)
+        val adapter = PoemRecyclerViewAdapter(getPoemsByAuthor(author), applicationContext)
         recyclerViewPoems.adapter = adapter
     }
 

@@ -31,7 +31,12 @@
         <activity
             android:name=".Activities.AuthorActivity"
             android:label="@string/title_activity_author"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.BaseNavigateActivity"
+            android:label="@string/title_activity_base_navigate"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activities.Author2Activity"></activity>
     </application>
 
 </manifest>

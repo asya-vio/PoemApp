@@ -1,6 +1,5 @@
 package com.anastasia.poemapp.Adapters
 
-import android.accounts.NetworkErrorException
 import android.content.Context
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
@@ -10,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.anastasia.poemapp.Activities.AuthorActivity
-import com.anastasia.poemapp.Activities.PoemActivity
 import com.anastasia.poemapp.Interfaces.RecyclerViewClickListener
 import com.anastasia.poemapp.Models.Author
 import com.anastasia.poemapp.R
@@ -65,7 +63,7 @@ class AuthorRecyclerViewAdapter(private val authorList : ArrayList<Author>, cont
                 try {
                     Picasso.get().load(author.photo).into(authorIV)
                 }
-                catch (e: NetworkErrorException) {
+                catch (e: Exception) {
                     authorIV.setImageResource(R.drawable.author)
                 }
 

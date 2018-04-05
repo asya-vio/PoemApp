@@ -66,5 +66,4 @@ class PoemRecyclerViewAdapter(private val poemList : ArrayList<Poem>,context: Co
 
             }
         }
-
     }

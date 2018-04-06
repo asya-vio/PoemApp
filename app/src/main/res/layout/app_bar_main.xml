@@ -16,11 +16,12 @@
             android:id="@+id/toolbar_main"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/side_nav_bar"
             app:titleTextColor="#FFFF"
             android:scrollHorizontally="true"
             app:layout_scrollFlags="enterAlways"
+            android:background="@drawable/background"
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
+        <!--android:background="@drawable/side_nav_bar"-->
         <!--android:background="#F5B884"-->
 
     </android.support.design.widget.AppBarLayout>

@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
+import android.support.v7.app.ActionBar
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import com.anastasia.poemapp.AppBase.getPoemById
 import com.anastasia.poemapp.MainActivity
@@ -15,6 +17,7 @@ import com.anastasia.poemapp.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_poem.*
 import kotlinx.android.synthetic.main.app_bar_poem.*
+import kotlinx.android.synthetic.main.app_bar_poem.view.*
 import kotlinx.android.synthetic.main.content_poem.*
 
 class PoemActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -23,6 +26,7 @@ class PoemActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_poem)
         setSupportActionBar(toolbar_poem)
+
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout_poem, toolbar_poem, R.string.navigation_drawer_open, R.string.navigation_drawer_close)

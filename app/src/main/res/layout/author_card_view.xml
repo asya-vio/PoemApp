@@ -14,6 +14,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/auth_photo"
+                android:paddingTop="5dp"
+                android:layout_width="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_height="150dp" />
+
             <TextView
                 android:id="@+id/auth_name"
                 android:layout_width="match_parent"
@@ -23,13 +30,6 @@
                 android:layout_below="@id/auth_photo"
                 style="@style/HeaderFont">
             </TextView>
-
-            <ImageView
-                android:id="@+id/auth_photo"
-                android:paddingTop="5dp"
-                android:layout_width="100dp"
-                android:layout_centerHorizontal="true"
-                android:layout_height="150dp" />
 
         </RelativeLayout>
 
